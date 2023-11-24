@@ -4,11 +4,19 @@ import json
 #GRANT ALL PRIVILEGES ON informatica1.* TO 'informatica1'@'localhost' WITH GRANT OPTION;
 nome_usuario = input("Ingrese el nombre de usuario: ") or 'informatica1'
 password_db = input("Ingrese la contraseña: ") or 'bio123'
-db = conectar_mysql(nome_usuario, password_db)
-if db:
+try:
+    db = conectar_mysql(nome_usuario, password_db)
     cursor = db.cursor()
-else:
+except ConnectionError:
+    print("Conexión denegada")
+except Exception as e:
+    print(f"Error inesperado: {e}")
     print("Conexión fallida")
+# db = conectar_mysql(nome_usuario, password_db)
+# if db:
+#     cursor = db.cursor()
+# else:
+#     print("Conexión fallida")
 
 cursor.execute("CREATE DATABASE IF NOT EXISTS informatica1")
 cursor.execute("USE informatica1")

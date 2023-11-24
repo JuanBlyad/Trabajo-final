@@ -18,7 +18,7 @@ def conectar_mysql(usuario, password, host='localhost'):
         return db
     except mysql.connector.Error as mal:
         print(f"Error: {mal}")
-        return None
+        raise ConnectionError("Conexión denegada")
 
 def validacao(valor,tipovalue,correo=False,fecha=False,direccao=False,hora=False,telefono=False,ID=False,booleano=False,tipo_sangre=False):
     """Función que toma como parámetros el valor a validar y su tipo de valor. Retorna el valor en su tipo si es correcto;
@@ -29,20 +29,24 @@ def validacao(valor,tipovalue,correo=False,fecha=False,direccao=False,hora=False
     """
     while True:
         if tipovalue == int:
-            if valor.isdigit():
-                return tipovalue(valor)
-            elif ID == True:
+            if ID == True:
                 if valor.isdigit() and len(valor) == 3:
                     return tipovalue(valor)
                 else:
                     valor = input("Valor no válido. Ingrese el valor nuevamente: ")
             elif booleano == True:
-                if valor.isdigit() and len(valor) == 1:
-                    return tipovalue(valor)
+                if valor.isdigit():
+                    if valor == str(1) or valor == str(0):
+                        return tipovalue(valor)
+                    else:
+                        valor = input("Valor no válido. Ingrese el valor nuevamente: ")
                 else:
                     valor = input("Valor no válido. Ingrese el valor nuevamente: ")
             else:
-                valor = input("Valor no válido. Ingrese el valor nuevamente: ")
+                if valor.isdigit():
+                    return tipovalue(valor)
+                else:
+                    valor = input("Valor no válido. Ingrese el valor nuevamente: ")
         elif tipovalue == str:
             if correo == True:
                 if '@' in valor and '.' in valor.split('@')[1] and len(valor.split('@')[1].split('.')) > 1:
@@ -82,7 +86,7 @@ def validacao(valor,tipovalue,correo=False,fecha=False,direccao=False,hora=False
                     valor = input("Valor no válido. Ingrese el valor nuevamente: ")
             else:
                 partes = valor.split(' ')
-                if all(parte.isalnum() for parte in partes):
+                if all(parte.isalpha() for parte in partes):
                     return valor
                 else:
                     valor = input("Valor no válido. Ingrese el valor nuevamente: ")
@@ -346,8 +350,6 @@ def agregar(db,cursor,donde_add):
                         elementinho = validacao(elementinho,str,telefono=True)
                     elif i == 0:
                         elementinho = validacao(elementinho,int,ID=True)
-                    else:
-                        elementinho = validacao(elementinho,int)
                 elif i == 4:
                     elementinho = validacao(elementinho,str,correo=True)
                 elif i == 5:
@@ -430,7 +432,7 @@ def consultar(cursor,query,tabla,acc_medico=False):
     while True:
         if tabla == 1:
             id = input("ingrese el ID del médico que desea buscar: ")
-            id = validacao(id,int)
+            id = validacao(id,int,ID=True)
             cursor.execute("SELECT * FROM Medicos WHERE ID = {}".format(id))
             for medico in cursor.fetchall():
                 #medico es tupla de cada row
@@ -476,7 +478,7 @@ def consultar(cursor,query,tabla,acc_medico=False):
             #CAMBIAR AQUÍ FORMATO
             if acc_medico:
                 id = input("ingrese el ID del Médico de la cita que desea buscar: ")
-                id = validacao(id,int)
+                id = validacao(id,int,ID=True)
                 cursor.execute("SELECT * FROM Citas WHERE ID_Medico = {}".format(id))
                 resultados = cursor.fetchall()
                 citas = {} #citas es el <<dict>> que pasa a la función
@@ -508,7 +510,7 @@ def consultar(cursor,query,tabla,acc_medico=False):
                         print("Opción no válida. Por favor, seleccione una opción válida (1-3).")        
             else:
                 id = input("ingrese el ID del paciente de la cita que desea buscar: ")
-                id = validacao(id,int)
+                id = validacao(id,int,ID=True)
                 cursor.execute("SELECT ID, ID_Medico, Fecha, Hora FROM Citas WHERE ID_Paciente = {}".format(id))
                 for cita in cursor.fetchall():
                     #Cita es tupla de cada row
@@ -561,7 +563,7 @@ def editar(db,cursor,donde_trocar):
                 else:
                     qual_columna = input("Valor no valido, ingrese la columna nuevamente: ")
             qual_ID = input(f"Ingrese el ID en el cual quiere que cambiar el valor de {qual_columna}: ")
-            qual_ID = validacao(qual_ID,int) # {4}
+            qual_ID = validacao(qual_ID, int, ID=True)  # {4}
             if qual_columna == columnas[3]:
                 novo_valor = input("Ingrese el nuevo valor por el que desea actualizar: ")
                 novo_valor = validacao(novo_valor,str,telefono=True) #{2}
@@ -571,7 +573,7 @@ def editar(db,cursor,donde_trocar):
             elif qual_columna == columnas[5]:
                 print("Disponible toma como valores: (1, 0) enteros")
                 novo_valor = input("Ingrese el nuevo valor por el que desea actualizar: ")
-                novo_valor = validacao(novo_valor,int)
+                novo_valor = validacao(novo_valor,int,booleano=True)
             else:
                 novo_valor = input("Ingrese el nuevo valor por el que desea actualizar: ")
                 novo_valor = validacao(novo_valor,str)
@@ -592,7 +594,7 @@ def editar(db,cursor,donde_trocar):
                 else:
                     qual_columna = input("Valor no valido, ingrese la columna nuevamente: ")
             qual_ID = input(f"Ingrese el ID en el cual quiere que cambiar el valor de {qual_columna}: ")
-            qual_ID = validacao(qual_ID,int) # {4}
+            qual_ID = validacao(qual_ID, int, ID=True)  # {4}
             if qual_columna == columnas[2]:
                 novo_valor = input("Ingrese el nuevo valor por el que desea actualizar: ")
                 novo_valor = validacao(novo_valor,str,fecha=True) #{2}
@@ -625,11 +627,11 @@ def editar(db,cursor,donde_trocar):
                 else:
                     qual_columna = input("Valor no valido, ingrese la columna nuevamente: ")
             qual_ID = input(f"Ingrese el ID en el cual quiere que cambiar el valor de {qual_columna}: ")
-            qual_ID = validacao(qual_ID,int) # {4}
+            qual_ID = validacao(qual_ID, int, ID=True)  # {4}
             if qual_columna == columnas[3] or qual_columna == columnas[4]:
                 print("Esta columna toma como valores: (1, 0) enteros")
                 novo_valor = input("Ingrese el nuevo valor por el que desea actualizar: ")
-                novo_valor = validacao(novo_valor,int) #{2}
+                novo_valor = validacao(novo_valor,int,booleano=True) #{2}
             else:
                 novo_valor = input("Ingrese el nuevo valor por el que desea actualizar: ")
                 novo_valor = validacao(novo_valor,str)
@@ -650,7 +652,7 @@ def editar(db,cursor,donde_trocar):
                 else:
                     qual_columna = input("Valor no valido, ingrese la columna nuevamente: ")
             qual_ID = input(f"Ingrese el ID en el cual quiere que cambiar el valor de {qual_columna}: ")
-            qual_ID = validacao(qual_ID, int)  # {4}
+            qual_ID = validacao(qual_ID, int, ID=True)  # {4}
             if qual_columna == columnas[3]:
                 novo_valor = input("Ingrese el nuevo valor por el que desea actualizar (formato AAAA-MM-DD): ")
                 novo_valor = validacao(novo_valor, str, fecha=True)  # {2}
