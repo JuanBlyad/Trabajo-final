@@ -1,0 +1,17 @@
+[
+    {
+        "ID": 201,
+        "Usuario": "informatica1",
+        "Password": "bio123",
+        "Permiso_Medico": 1,
+        "Permiso_Paciente": 1
+    },
+    {
+        "ID": 202,
+        "Usuario": "johnson",
+        "Password": "angelower123",
+        "Permiso_Medico": 1,
+        "Permiso_Paciente": 0
+    }
+
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "ID": 101,
+        "Nombre": "Frenkie de Jong",
+        "Nacimiento": "1999-10-20",
+        "Genero": "M",
+        "Tipo_Sangre": "AB+",
+        "Telefono": "+1111111123",
+        "Dirección": "Calle 7, avenida 15",
+        "Email": "frenkie@gmail.com"
+    },
+    {
+        "ID": 102,
+        "Nombre": "Adam Ondra",
+        "Nacimiento": "1991-03-09",
+        "Genero": "M",
+        "Tipo_Sangre": "A+",
+        "Telefono": "+1999909912",
+        "Dirección": "Carrera 5, calle 28",
+        "Email": "ondra@gmail.com"
+    },
+    {
+        "ID": 103,
+        "Nombre": "Prueba",
+        "Nacimiento": "0000-00-00",
+        "Genero": "F",
+        "Tipo_Sangre": "O+",
+        "Telefono": "+0000000000",
+        "Dirección": "Calle 0, carrera 0",
+        "Email": "prueba@gmail.com"
+    }
+]

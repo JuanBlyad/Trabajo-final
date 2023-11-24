@@ -1,0 +1,26 @@
+[
+    {
+        "ID": 301,
+        "Nombre": "Luis Suárez",
+        "Especialidad": "Oftalmología",
+        "Telefono": "+1234567890",
+        "Email": "suarez@gmail.com",
+        "Disponible": 1
+    },
+    {
+        "ID": 302,
+        "Nombre": "Lee Sanghyeok",
+        "Especialidad": "Ginecología",
+        "Telefono": "+1234123123",
+        "Email": "faker@gmail.com",
+        "Disponible": 1
+    },
+    {
+        "ID": 303,
+        "Nombre": "Prueba",
+        "Especialidad": "Prueba",
+        "Telefono": "+0000000000",
+        "Email": "prueba@gmail.com",
+        "Disponible": 1
+    }
+]

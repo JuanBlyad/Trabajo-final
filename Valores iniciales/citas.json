@@ -1,0 +1,16 @@
+[
+    {
+        "ID": 1,
+        "ID_Medico": 301,
+        "ID_Paciente": 101,
+        "Fecha": "2023-11-19",
+        "Hora": "10:00"
+    },
+    {
+        "ID": 2,
+        "ID_Medico": 302,
+        "ID_Paciente": 102,
+        "Fecha": "2023-11-26",
+        "Hora":"11:00"
+    }
+]
